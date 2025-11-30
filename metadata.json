@@ -1,0 +1,5 @@
+{
+  "name": "C&C Retro Installer",
+  "description": "A retro-styled game installation simulator mimicking the original Command & Conquer DOS installer interface.",
+  "requestFramePermissions": []
+}

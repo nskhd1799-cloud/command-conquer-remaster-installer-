@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C&C Installation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #000;
+        margin: 0;
+        overflow: hidden;
+      }
+      /* Custom scrollbar to hide it but keep functionality if needed */
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+      .font-retro {
+        font-family: 'Share Tech Mono', monospace;
+      }
+      .text-shadow-glow {
+        text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5);
+      }
+      .text-shadow-orange {
+        text-shadow: 0 0 5px rgba(255, 170, 0, 0.7), 0 0 10px rgba(255, 170, 0, 0.5);
+      }
+      .chromatic-aberration {
+        text-shadow: 2px 0 rgba(255,0,0,0.3), -2px 0 rgba(0,0,255,0.3), 0 0 8px rgba(0,255,0,0.5);
+      }
+      @keyframes flicker {
+        0% { opacity: 0.97; }
+        5% { opacity: 0.95; }
+        10% { opacity: 0.9; }
+        15% { opacity: 0.95; }
+        20% { opacity: 0.99; }
+        25% { opacity: 0.95; }
+        30% { opacity: 0.9; }
+        35% { opacity: 0.96; }
+        40% { opacity: 0.98; }
+        45% { opacity: 0.95; }
+        50% { opacity: 0.99; }
+        55% { opacity: 0.93; }
+        60% { opacity: 0.9; }
+        65% { opacity: 0.96; }
+        70% { opacity: 1; }
+        75% { opacity: 0.97; }
+        80% { opacity: 0.95; }
+        85% { opacity: 0.92; }
+        90% { opacity: 0.96; }
+        95% { opacity: 0.99; }
+        100% { opacity: 0.94; }
+      }
+      .animate-flicker {
+        animation: flicker 0.15s infinite;
+      }
+      @keyframes scanline {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+      .animate-scanline {
+        animation: scanline 8s linear infinite;
+      }
+      .animate-spin-slow {
+        animation: spin 6s linear infinite;
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+      }
+      .animate-glitch {
+        animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+      }
+      @keyframes flash-text {
+        0%, 100% { color: #ffaa00; opacity: 1; }
+        50% { color: #ffffff; opacity: 0.8; }
+      }
+      .animate-flash-text {
+        animation: flash-text 0.2s ease-out;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
