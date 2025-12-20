@@ -9,10 +9,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
+      * {
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        -webkit-user-drag: none !important;
+      }
       body {
         background-color: #000;
         margin: 0;
         overflow: hidden;
+        cursor: default;
       }
       /* Custom scrollbar to hide it but keep functionality if needed */
       ::-webkit-scrollbar {
@@ -103,5 +111,54 @@
 </head>
   <body>
     <div id="root"></div>
+    <!-- 显式引入 index.tsx 作为 Vite 构建的入口 -->
+    <script type="module" src="./index.tsx"></script>
+    <script>
+      // 禁用右键菜单
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      
+      // 禁用开发者工具快捷键
+      document.addEventListener('keydown', e => {
+        // 屏蔽 F12
+        if (e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // 屏蔽 Ctrl+Shift+I, J, C
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+          e.preventDefault();
+          return false;
+        }
+        // 屏蔽 Ctrl+U (查看源码)
+        if (e.ctrlKey && e.keyCode === 85) {
+          e.preventDefault();
+          return false;
+        }
+        // 屏蔽 Ctrl+S, Ctrl+P 等常规保存/打印
+        if (e.ctrlKey && (e.keyCode === 83 || e.keyCode === 80)) {
+          e.preventDefault();
+          return false;
+        }
+        // 屏蔽 Ctrl+C, Ctrl+V
+        if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // 防调试注入 (简单的无限 debugger 循环)
+      (function() {
+        const d = function() {
+          let count = 0;
+          const check = () => {
+            count++;
+            if (count > 100) {
+              window.location.reload();
+            }
+          };
+          setInterval(check, 1000);
+        };
+      })();
+    </script>
   </body>
 </html>

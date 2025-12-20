@@ -15,12 +15,13 @@ export const FILE_LIST = [
   "BARRACKS.SHP", "HAND.SHP", "COM_CNTR.SHP", "ADV_COM.SHP", "REPAIR.SHP"
 ];
 
+// Added missing 'detail' property to each spec to fix TypeScript error in App.tsx
 export const SYSTEM_SPECS = [
-  { label: "PROCESSOR", value: "INTEL 80486DX2-66" },
-  { label: "MEMORY", value: "16384 KB OK" },
-  { label: "VIDEO", value: "VGA ADAPTER DETECTED" },
-  { label: "DOS VERSION", value: "6.22" },
-  { label: "MOUSE", value: "MICROSOFT COMPATIBLE" },
+  { label: "PROCESSOR", value: "INTEL 80486DX2-66", detail: "CLOCK: 66MHZ / VOLT: 5.0V" },
+  { label: "MEMORY", value: "16384 KB OK", detail: "BASE: 640KB / EXT: 15744KB" },
+  { label: "VIDEO", value: "VGA ADAPTER DETECTED", detail: "CHIPSET: CIRRUS LOGIC GD5428" },
+  { label: "DOS VERSION", value: "6.22", detail: "KERNEL: MS-DOS / BUILD: 2222" },
+  { label: "MOUSE", value: "MICROSOFT COMPATIBLE", detail: "DRIVER: MOUSE.SYS V8.2" },
 ];
 
 export enum InstallStep {

@@ -8,7 +8,7 @@ import SchematicView from './components/SchematicView';
 import LipSyncVisualizer from './components/LipSyncVisualizer';
 import DataMontage from './components/DataMontage';
 import { InstallStep, FILE_LIST, SYSTEM_SPECS } from './constants';
-import { Volume2, VolumeX, HardDrive, Cpu, CheckSquare, Square, Disc, ShieldAlert, Wifi, Zap, Activity, Globe, Lock, User, FileText, Music, Key } from 'lucide-react';
+import { Volume2, VolumeX, HardDrive, Cpu, CheckSquare, Square, Disc, ShieldAlert, Wifi, Zap, Activity, Globe, Lock, User, FileText, Music, Key, Info } from 'lucide-react';
 import { SoundSystem } from './utils/sound';
 
 export default function App() {
@@ -26,6 +26,7 @@ export default function App() {
   const [commanderName, setCommanderName] = useState("");
   const [authStep, setAuthStep] = useState(0); // 0: Input, 1: Verifying
   const [musicTrack, setMusicTrack] = useState(0); // 0-5
+  const [hoverSpecIndex, setHoverSpecIndex] = useState<number | null>(null);
   
   // New State for Boot & Serial
   const [bootLines, setBootLines] = useState<string[]>([]);
@@ -605,17 +606,41 @@ export default function App() {
         {currentStep === InstallStep.SYSTEM_CHECK && (
           <div className="w-full max-w-5xl mx-auto mt-8">
              <TechFrame title="SYS_DIAGNOSTICS" theme="green">
+                 <div className="text-xs text-[#008800] mb-4 uppercase tracking-[0.2em] animate-pulse">
+                    HOVER OVER COMPONENTS FOR ADVANCED DATA
+                 </div>
                  <div className="grid grid-cols-1 gap-2 p-2">
                     {SYSTEM_SPECS.map((spec, index) => (
-                      <div key={index} className={`flex justify-between items-center p-3 border-b border-[#003300] transition-all duration-300 ${index <= systemCheckIndex ? 'opacity-100' : 'opacity-20'}`}>
+                      <div 
+                        key={index} 
+                        onMouseEnter={() => index < systemCheckIndex && setHoverSpecIndex(index)}
+                        onMouseLeave={() => setHoverSpecIndex(null)}
+                        className={`group flex flex-col md:flex-row md:justify-between md:items-center p-4 border-b border-[#003300] transition-all duration-300 relative ${index <= systemCheckIndex ? 'opacity-100 bg-[#001100]/50 hover:bg-[#002200]/80' : 'opacity-20'}`}
+                      >
                         <div className="flex items-center">
-                            <div className={`w-2 h-2 mr-4 ${index < systemCheckIndex ? 'bg-[#00ff00]' : 'bg-[#004400]'}`}></div>
-                            <span className="uppercase tracking-widest text-lg md:text-xl text-[#00cc00]">{spec.label}</span>
+                            <div className={`w-3 h-3 mr-4 ${index < systemCheckIndex ? 'bg-[#00ff00] shadow-[0_0_5px_#00ff00]' : 'bg-[#004400]'}`}></div>
+                            <span className="uppercase tracking-widest text-lg md:text-xl text-[#00cc00] group-hover:text-white transition-colors">{spec.label}</span>
                         </div>
-                        <span className="font-mono text-lg md:text-xl">
-                           {index < systemCheckIndex && <span className="text-[#00ff00] text-shadow-glow">{spec.value}</span>}
-                           {index === systemCheckIndex && <span className="animate-pulse bg-[#ffaa00] text-black px-2 font-bold">SCANNING...</span>}
-                        </span>
+                        <div className="flex items-center gap-4 mt-2 md:mt-0">
+                           <span className="font-mono text-lg md:text-xl">
+                              {index < systemCheckIndex && <span className="text-[#00ff00] text-shadow-glow font-bold">{spec.value}</span>}
+                              {index === systemCheckIndex && <span className="animate-pulse bg-[#ffaa00] text-black px-2 font-bold tracking-tighter">SCANNING...</span>}
+                           </span>
+                           {index < systemCheckIndex && (
+                              <Info size={16} className={`hidden md:block transition-colors ${hoverSpecIndex === index ? 'text-[#ffaa00]' : 'text-[#006600]'}`} />
+                           )}
+                        </div>
+
+                        {/* HOVER TOOLTIP */}
+                        {hoverSpecIndex === index && (
+                          <div className="absolute left-1/2 -top-12 -translate-x-1/2 z-[100] bg-black border border-[#ffaa00] p-2 text-[10px] md:text-xs text-[#ffaa00] font-mono whitespace-nowrap shadow-[0_0_15px_rgba(255,170,0,0.3)] pointer-events-none animate-flicker">
+                             <div className="flex items-center gap-2 mb-1 border-b border-[#884400] pb-1">
+                                <Zap size={10} />
+                                <span className="font-bold">ADVANCED_DIAGNOSTICS</span>
+                             </div>
+                             {spec.detail}
+                          </div>
+                        )}
                       </div>
                     ))}
                  </div>
@@ -769,15 +794,43 @@ export default function App() {
         {/* Step 13: Complete (Finale) */}
         {currentStep === InstallStep.COMPLETE && (
           <div className="flex flex-col items-center justify-center h-full w-full relative z-50">
-             <div className="relative w-full text-center px-4">
-                 {/* Laser Reveal Effect */}
-                 <div className="absolute inset-0 bg-[#000000] animate-[scanline_2s_ease-out_forwards] mix-blend-multiply pointer-events-none"></div>
+             <div className="relative w-full text-center px-4 overflow-visible">
                  
-                 <h2 className="font-bold tracking-[0.1em] text-[#00ff00] whitespace-nowrap overflow-hidden text-center w-full leading-none drop-shadow-[0_0_15px_rgba(0,255,0,0.8)]" style={{fontSize: '5vw', fontFamily: 'Share Tech Mono'}}>
-                   {finalWelcomeText}
-                   <span className="animate-pulse text-[#ffaa00] inline-block w-[1ch] h-[0.8em] align-middle bg-[#00ff00] ml-2" style={{clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'}}></span>
-                 </h2>
+                 {/* Laser Line and Text Reveal Effect */}
+                 <div className="relative inline-block">
+                    {/* Floating Laser Line - Full Width Reveal Line */}
+                    <div className="absolute left-[-100vw] right-[-100vw] h-[4px] bg-[#00ff00] shadow-[0_0_20px_#00ff00,0_0_8px_#fff] z-[60] animate-laser-move pointer-events-none"></div>
+
+                    <h2 
+                        className="font-bold tracking-[0.1em] text-[#00ff00] whitespace-nowrap overflow-hidden text-center w-full leading-none drop-shadow-[0_0_25px_rgba(0,255,0,1)] animate-reveal-down" 
+                        style={{fontSize: '5vw', fontFamily: 'Share Tech Mono'}}
+                    >
+                      {finalWelcomeText}
+                      <span className="animate-pulse text-[#ffaa00] inline-block w-[1ch] h-[0.8em] align-middle bg-[#00ff00] ml-2"></span>
+                    </h2>
+                 </div>
+
              </div>
+             
+             <style>{`
+                @keyframes reveal-down {
+                  0% { clip-path: inset(0 0 100% 0); }
+                  100% { clip-path: inset(0 0 0 0); }
+                }
+                @keyframes laser-move {
+                  0% { top: -20px; opacity: 0; }
+                  10% { opacity: 1; }
+                  90% { opacity: 1; }
+                  100% { top: 100%; opacity: 0; }
+                }
+                .animate-reveal-down {
+                  animation: reveal-down 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                }
+                .animate-laser-move {
+                  animation: laser-move 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                }
+             `}</style>
+
              <div className={`absolute bottom-20 flex space-x-8 transition-opacity duration-1000 ${showFinalButtons ? 'opacity-100' : 'opacity-0'}`}>
                 <button 
                   onClick={() => {
